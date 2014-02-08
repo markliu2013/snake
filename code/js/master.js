@@ -1,3 +1,4 @@
+var gameState = 2;//游戏的状态 1停止  2运行  3暂停
 var gridRowNum = 20;
 var gridColNum = 20;
 var snakeArr = [[1, 9], [2, 9], [3, 9]];//存储snake所占的grid数据
@@ -57,7 +58,13 @@ function snakeRun() {
 		moveDown();
 	}
 }
-
+/**
+ * 重置蛇运动的线程
+ */
+function resetMoveThread() {
+	clearInterval(moveThread);
+	moveThread = setInterval(snakeRun, speed);
+}
 /**
  * 蛇向上移动一格
  */
@@ -71,6 +78,7 @@ function moveUp() {
 	var lastNode = snakeArr[snakeArr.length-1];
 	if ((lastNode[1]-1) < 1) {
 		clearInterval(moveThread);
+		gameState = 1;
 		return;
 	}
 	//更新DOM和snakeArr
@@ -93,6 +101,7 @@ function moveRight() {
 	//先判断是否要越界？
 	if ((lastNode[0]+1) > gridColNum) {
 		clearInterval(moveThread);
+		gameState = 1;
 		return;
 	}
 	//更新DOM和snakeArr
@@ -116,6 +125,7 @@ function moveDown() {
 	var lastNode = snakeArr[snakeArr.length-1];
 	if ((lastNode[1]+1) > gridRowNum) {
 		clearInterval(moveThread);
+		gameState = 1;
 		return;
 	}
 	//更新DOM和snakeArr
@@ -138,6 +148,7 @@ function moveLeft() {
 	//先判断是否要越界？
 	if ((lastNode[0]-1) < 1) {//下一步撞到墙了
 		clearInterval(moveThread);
+		gameState = 1;
 		return;
 	}
 	//更新DOM和snakeArr
@@ -157,28 +168,39 @@ function bindKeyBorad() {
 			direction = event.keyCode;
 		}
 		*/
+		if (gameState != 2) {
+			return;
+		}
 		//方向不能瞬间掉头
 		if (event.keyCode==37) {//left
 			if (direction != 39) {
+				resetMoveThread();
 				direction = event.keyCode;
+				moveLeft();
 			}
 			event.preventDefault();
 		}
 		else if (event.keyCode==38) {//up
 			if (direction != 40) {
+				resetMoveThread();
 				direction = event.keyCode;
+				moveUp();
 			}
 			event.preventDefault();
 		}
 		else if (event.keyCode==39) {//right
 			if (direction != 37) {
+				resetMoveThread();
 				direction = event.keyCode;
+				moveRight();
 			}
 			event.preventDefault();
 		}
 		else if (event.keyCode==40) {//down
 			if (direction != 38) {
+				resetMoveThread();
 				direction = event.keyCode;
+				moveDown();
 			}
 			event.preventDefault();
 		}
