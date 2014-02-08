@@ -62,14 +62,15 @@ function snakeRun() {
  * 蛇向上移动一格
  */
 function moveUp() {
+	var nextNode = [snakeArr[snakeArr.length-1][0], snakeArr[snakeArr.length-1][1]-1];
+	if (checkEqual(food, nextNode)) {//下一步吃到食物
+		snakeArr.push(food);
+		initFood();
+		return;
+	}
 	var lastNode = snakeArr[snakeArr.length-1];
 	if ((lastNode[1]-1) < 1) {
 		clearInterval(moveThread);
-		return;
-	}
-	if (checkEqual(food, lastNode)) {//下一步吃到食物
-		snakeArr.push(food);
-		initFood();
 		return;
 	}
 	//更新DOM和snakeArr
@@ -82,15 +83,16 @@ function moveUp() {
  * 蛇向右移动一格
  */
 function moveRight() {
+	var nextNode = [snakeArr[snakeArr.length-1][0]+1, snakeArr[snakeArr.length-1][1]];
+	if (checkEqual(food, nextNode)) {//下一步吃到食物
+		snakeArr.push(food);
+		initFood();
+		return;
+	}
 	var lastNode = snakeArr[snakeArr.length-1];
 	//先判断是否要越界？
 	if ((lastNode[0]+1) > gridColNum) {
 		clearInterval(moveThread);
-		return;
-	}
-	if (checkEqual(food, lastNode)) {//下一步吃到食物
-		snakeArr.push(food);
-		initFood();
 		return;
 	}
 	//更新DOM和snakeArr
@@ -105,14 +107,15 @@ function moveRight() {
  * 向下移动一格
  */
 function moveDown() {
+	var nextNode = [snakeArr[snakeArr.length-1][0], snakeArr[snakeArr.length-1][1]+1];
+	if (checkEqual(food, nextNode)) {//下一步吃到食物
+		snakeArr.push(food);
+		initFood();
+		return;
+	}
 	var lastNode = snakeArr[snakeArr.length-1];
 	if ((lastNode[1]+1) > gridRowNum) {
 		clearInterval(moveThread);
-		return;
-	}
-	if (checkEqual(food, lastNode)) {//下一步吃到食物
-		snakeArr.push(food);
-		initFood();
 		return;
 	}
 	//更新DOM和snakeArr
@@ -125,15 +128,16 @@ function moveDown() {
  * 向左移动一格
  */
 function moveLeft() {
+	var nextNode = [snakeArr[snakeArr.length-1][0]-1, snakeArr[snakeArr.length-1][1]];
+	if (checkEqual(food, nextNode)) {//下一步吃到食物
+		snakeArr.push(food);
+		initFood();
+		return;
+	}
 	var lastNode = snakeArr[snakeArr.length-1];
 	//先判断是否要越界？
 	if ((lastNode[0]-1) < 1) {//下一步撞到墙了
 		clearInterval(moveThread);
-		return;
-	}
-	if (checkEqual(food, lastNode)) {//下一步吃到食物
-		snakeArr.push(food);
-		initFood();
 		return;
 	}
 	//更新DOM和snakeArr
