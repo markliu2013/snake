@@ -8,10 +8,51 @@
 	<script src="js/master.js" type="text/javascript"></script>
 </head>
 <body>
-	<div id="page">
-		<div id="snake-grid">
-
-		</div>
+	<div id="page" class="clearfix">
+		<div id="snake-grid"></div>
+		<div id="control-panel">
+			<h2 id="game-state">游戏停止</h2>
+			<div class="row score clearfix"><span>分数: </span><strong id="score-num">3</strong></div>
+			<div class="row">
+				<select id="select-gridRowNum">
+					<option value="30">30</option>
+					<option value="20">20</option>
+					<option value="10">10</option>
+				</select>
+				<span>行</span>
+				<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+				<select id="select-gridColNum">
+					<option value="30">30</option>
+					<option value="20">20</option>
+					<option value="10">10</option>
+				</select>
+				<span>列</span>
+			</div>
+			<div class="row">
+				<span>蛇每</span>
+				<select id="select-speed">
+					<option value="1000">1000</option>
+					<option value="900">900</option>
+					<option value="800" selected="selected">800</option>
+					<option value="700">700</option>
+					<option value="600">600</option>
+					<option value="500">500</option>
+					<option value="400">400</option>
+					<option value="300">300</option>
+					<option value="200">200</option>
+					<option value="100">100</option>
+					<option value="50">50</option>
+				</select>
+				<span>毫秒移动一格</span>
+			</div>
+			<div class="row buttons clearfix">
+				<a id="start-game" class="btn" href="#">新游戏</a>
+				<a id="pause-game" class="btn disabled" href="#">暂停</a>
+				<a id="stop-game" class="btn disabled" href="#">停止</a>
+			</div>
+			<p>注意：长按方向键，可以加快蛇的移动。</p>
+			<p>Written by Mark Liu. <a href="http://www.markliublog.com/" target="_blank">http://www.markliublog.com/</a></p>
+		</div><!-- end control-panel -->
 	</div>
 </body>
 </html>

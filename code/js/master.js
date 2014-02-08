@@ -1,18 +1,65 @@
-var gameState = 2;//游戏的状态 1停止  2运行  3暂停
-var gridRowNum = 20;
-var gridColNum = 20;
-var snakeArr = [[1, 9], [2, 9], [3, 9]];//存储snake所占的grid数据
+var gameState = 1;//游戏的状态 1停止  2运行  3已暂停
+var gridRowNum = 30;
+var gridColNum = 30;
+var snakeArr = null;//存储snake所占的grid数据
 var food = null;//存储food所占的grid数据
 var speed = 200;//速度，单位毫秒，表示多少毫秒移动一格
-var direction = 39;//蛇运动的方向，初始化向左。
+var direction = 39;//蛇运动的方向，初始化向右。
 var moveThread = null;
 $(function() {
 	initGrid(gridRowNum, gridColNum);
-	bindKeyBorad();
+	initsnakeArr();
 	drawSnake();
 	initFood();
-	moveThread = setInterval(snakeRun, speed);
+	bindKeyBoard();
+	initControl();
 });
+
+function initsnakeArr() {
+	snakeArr = [[1, 1], [2, 1], [3, 1]];
+}
+
+function startNewGame() {
+	gridRowNum = parseInt($("#select-gridRowNum").val());
+	gridColNum = parseInt($("#select-gridColNum").val());
+	speed = parseInt($("#select-speed").val());
+	direction = 39;
+	initGrid(gridRowNum, gridColNum);
+	initsnakeArr();
+	drawSnake();
+	initFood();
+	resetMoveThread();
+	gameState = 2;
+	updateGameStateText();
+	updateScore();
+	$("#pause-game").removeClass("disabled");
+	$("#stop-game").removeClass("disabled");
+}
+
+function pauseGame() {
+	clearInterval(moveThread);
+	gameState = 3;
+	updateGameStateText();
+	$("#pause-game").text("继续");
+	$("#pause-game").addClass("paused");
+}
+function continueGame() {
+	resetMoveThread();
+	gameState = 2;
+	updateGameStateText();
+	$("#pause-game").text("暂停");
+	$("#pause-game").removeClass("paused");
+}
+function stopGame() {
+	clearInterval(moveThread);
+	initsnakeArr();
+	drawSnake();
+	initFood();
+	gameState = 1;
+	updateGameStateText();
+	$("#pause-game").addClass("disabled");
+	$("#stop-game").addClass("disabled");
+}
 
 /**
  * 初始化Grid
@@ -72,6 +119,7 @@ function moveUp() {
 	var nextNode = [snakeArr[snakeArr.length-1][0], snakeArr[snakeArr.length-1][1]-1];
 	if (checkEqual(food, nextNode)) {//下一步吃到食物
 		snakeArr.push(food);
+		updateScore();
 		initFood();
 		return;
 	}
@@ -79,6 +127,8 @@ function moveUp() {
 	if ((lastNode[1]-1) < 1 || checkExists([lastNode[0], lastNode[1]-1], snakeArr)) {//撞到墙或撞到自己
 		clearInterval(moveThread);
 		gameState = 1;
+		updateGameStateText();
+		$("#pause-game").addClass("disabled");
 		return;
 	}
 	//更新DOM和snakeArr
@@ -94,6 +144,7 @@ function moveRight() {
 	var nextNode = [snakeArr[snakeArr.length-1][0]+1, snakeArr[snakeArr.length-1][1]];
 	if (checkEqual(food, nextNode)) {//下一步吃到食物
 		snakeArr.push(food);
+		updateScore();
 		initFood();
 		return;
 	}
@@ -102,6 +153,8 @@ function moveRight() {
 	if ((lastNode[0]+1) > gridColNum || checkExists([lastNode[0]+1, lastNode[1]], snakeArr)) {//撞到墙或撞到自己
 		clearInterval(moveThread);
 		gameState = 1;
+		updateGameStateText();
+		$("#pause-game").addClass("disabled");
 		return;
 	}
 	//更新DOM和snakeArr
@@ -119,6 +172,7 @@ function moveDown() {
 	var nextNode = [snakeArr[snakeArr.length-1][0], snakeArr[snakeArr.length-1][1]+1];
 	if (checkEqual(food, nextNode)) {//下一步吃到食物
 		snakeArr.push(food);
+		updateScore();
 		initFood();
 		return;
 	}
@@ -126,6 +180,8 @@ function moveDown() {
 	if ((lastNode[1]+1) > gridRowNum || checkExists([lastNode[0], lastNode[1]+1], snakeArr)) {//撞到墙或撞到自己
 		clearInterval(moveThread);
 		gameState = 1;
+		updateGameStateText();
+		$("#pause-game").addClass("disabled");
 		return;
 	}
 	//更新DOM和snakeArr
@@ -141,6 +197,7 @@ function moveLeft() {
 	var nextNode = [snakeArr[snakeArr.length-1][0]-1, snakeArr[snakeArr.length-1][1]];
 	if (checkEqual(food, nextNode)) {//下一步吃到食物
 		snakeArr.push(food);
+		updateScore();
 		initFood();
 		return;
 	}
@@ -149,6 +206,8 @@ function moveLeft() {
 	if ((lastNode[0]-1) < 1 || checkExists([lastNode[0]-1, lastNode[1]], snakeArr)) {//撞到墙或撞到自己
 		clearInterval(moveThread);
 		gameState = 1;
+		updateGameStateText();
+		$("#pause-game").addClass("disabled");
 		return;
 	}
 	//更新DOM和snakeArr
@@ -160,18 +219,12 @@ function moveLeft() {
 /**
  * 绑定键盘事件
  */
-function bindKeyBorad() {
+function bindKeyBoard() {
 	$(document).bind("keydown", function(event) {
-		/*
-		var directionArr = [37, 38, 39, 40];
-		if ($.inArray(event.keyCode, directionArr)>=0) {
-			direction = event.keyCode;
-		}
-		*/
 		if (gameState != 2) {
 			return;
 		}
-		//方向不能瞬间掉头
+		//方向不能瞬间掉头，为防止快速切换方向，重置线程。
 		if (event.keyCode==37) {//left
 			if (direction != 39) {
 				resetMoveThread();
@@ -211,6 +264,7 @@ function bindKeyBorad() {
  * 随机生成一个食物,保证了食物不出现在蛇身上。
  */
 function initFood() {
+	food = null;
 	while (true) {
 		food = getRandomPoint();
 		if (!checkExists(food, snakeArr)) {
@@ -248,10 +302,48 @@ function checkExists(arr1, arr2) {
 	return false;
 }
 
+function initControl() {
+	$("#start-game").bind("click", function(event) {
+		startNewGame();
+		return false;
+	});
+	$("#pause-game").bind("click", function(event) {
+		if ($(this).hasClass("disabled")) {
+			return false;
+		}
+		if ($(this).hasClass("paused")) {
+			continueGame();
+		} else {
+			pauseGame();
+		}
+		return false;
+	});
+	$("#stop-game").bind("click", function(event) {
+		if ($(this).hasClass("disabled")) {
+			return false;
+		}
+		stopGame();
+		return false;
+	})
+}
 
+function updateGameStateText() {
+	switch (gameState) {
+		case 1:
+			$("#game-state").text("游戏停止");
+			break;
+		case 2:
+			$("#game-state").text("正在游戏");
+			break;
+		case 3:
+			$("#game-state").text("游戏暂停");
+			break;
+	}
+}
 
-
-
+function updateScore() {
+	$("#score-num").text(snakeArr.length);
+}
 
 
 
