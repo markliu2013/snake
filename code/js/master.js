@@ -76,7 +76,7 @@ function moveUp() {
 		return;
 	}
 	var lastNode = snakeArr[snakeArr.length-1];
-	if ((lastNode[1]-1) < 1) {
+	if ((lastNode[1]-1) < 1 || checkExists([lastNode[0], lastNode[1]-1], snakeArr)) {//撞到墙或撞到自己
 		clearInterval(moveThread);
 		gameState = 1;
 		return;
@@ -99,7 +99,7 @@ function moveRight() {
 	}
 	var lastNode = snakeArr[snakeArr.length-1];
 	//先判断是否要越界？
-	if ((lastNode[0]+1) > gridColNum) {
+	if ((lastNode[0]+1) > gridColNum || checkExists([lastNode[0]+1, lastNode[1]], snakeArr)) {//撞到墙或撞到自己
 		clearInterval(moveThread);
 		gameState = 1;
 		return;
@@ -123,7 +123,7 @@ function moveDown() {
 		return;
 	}
 	var lastNode = snakeArr[snakeArr.length-1];
-	if ((lastNode[1]+1) > gridRowNum) {
+	if ((lastNode[1]+1) > gridRowNum || checkExists([lastNode[0], lastNode[1]+1], snakeArr)) {//撞到墙或撞到自己
 		clearInterval(moveThread);
 		gameState = 1;
 		return;
@@ -146,7 +146,7 @@ function moveLeft() {
 	}
 	var lastNode = snakeArr[snakeArr.length-1];
 	//先判断是否要越界？
-	if ((lastNode[0]-1) < 1) {//下一步撞到墙了
+	if ((lastNode[0]-1) < 1 || checkExists([lastNode[0]-1, lastNode[1]], snakeArr)) {//撞到墙或撞到自己
 		clearInterval(moveThread);
 		gameState = 1;
 		return;
