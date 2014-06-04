@@ -1,6 +1,6 @@
 var gameState = 1;//游戏的状态 1停止  2运行  3已暂停
-var gridRowNum = 20;
-var gridColNum = 20;
+var gridRowNum = 30;
+var gridColNum = 30;
 var snakeArr = null;//存储snake所占的grid数据
 var food = null;//存储food所占的grid数据
 var speed = 200;//速度，单位毫秒，表示多少毫秒移动一格

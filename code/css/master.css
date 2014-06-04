@@ -34,7 +34,7 @@ a:hover {
 }
 #page {
 	margin: 0 auto;
-	padding: 50px 0 0 0;
+	padding: 10px 0 0 0;
 	width: 960px;
 }
 #snake-grid {
@@ -42,13 +42,11 @@ a:hover {
 	padding: 1px;
 	border: 1px solid #000;
 }
-#snake-grid .row {
-}
 #snake-grid .row .col {
 	float: left;
 	margin: 1px;
-	width: 20px;
-	height: 20px;
+	width: 18px;
+	height: 18px;
 	background: #fff;
 }
 #snake-grid .row .col.on {
