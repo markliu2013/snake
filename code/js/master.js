@@ -40,14 +40,14 @@ function pauseGame() {
 	clearInterval(moveThread);
 	gameState = 3;
 	updateGameStateText();
-	$("#pause-game").text("继续");
+	$("#pause-game").text("Continue");
 	$("#pause-game").addClass("paused");
 }
 function continueGame() {
 	resetMoveThread();
 	gameState = 2;
 	updateGameStateText();
-	$("#pause-game").text("暂停");
+	$("#pause-game").text("Pause");
 	$("#pause-game").removeClass("paused");
 }
 function stopGame() {
@@ -330,13 +330,13 @@ function initControl() {
 function updateGameStateText() {
 	switch (gameState) {
 		case 1:
-			$("#game-state").text("游戏停止");
+			$("#game-state").text("Stopped");
 			break;
 		case 2:
-			$("#game-state").text("正在游戏");
+			$("#game-state").text("Runniing");
 			break;
 		case 3:
-			$("#game-state").text("游戏暂停");
+			$("#game-state").text("Paused");
 			break;
 	}
 }

@@ -11,25 +11,25 @@
 	<div id="page" class="clearfix">
 		<div id="snake-grid"></div>
 		<div id="control-panel">
-			<h2 id="game-state">游戏停止</h2>
-			<div class="row score clearfix"><span>分数: </span><strong id="score-num">3</strong></div>
+			<h2 id="game-state">Stopped</h2>
+			<div class="row score clearfix"><span>Score: </span><strong id="score-num">3</strong></div>
 			<div class="row">
 				<select id="select-gridRowNum">
 					<option value="30" selected="selected">30</option>
 					<option value="20">20</option>
 					<option value="10">10</option>
 				</select>
-				<span>行</span>
+				<span>Rows</span>
 				<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 				<select id="select-gridColNum">
 					<option value="30" selected="selected">30</option>
 					<option value="20">20</option>
 					<option value="10">10</option>
 				</select>
-				<span>列</span>
+				<span>Columns</span>
 			</div>
 			<div class="row">
-				<span>速度</span>
+				<span>Speed</span>
 				<select id="select-speed">
 					<option value="1000">1</option>
 					<option value="900">2</option>
@@ -43,14 +43,14 @@
 					<option value="100">10</option>
 					<option value="50">11</option>
 				</select>
-				<span>档</span>
+				<span>Level</span>
 			</div>
 			<div class="row buttons clearfix">
-				<a id="start-game" class="btn" href="#">新游戏</a>
-				<a id="pause-game" class="btn disabled" href="#">暂停</a>
-				<a id="stop-game" class="btn disabled" href="#">复位</a>
+				<a id="start-game" class="btn" href="#">New</a>
+				<a id="pause-game" class="btn disabled" href="#">Pause</a>
+				<a id="stop-game" class="btn disabled" href="#">Reset</a>
 			</div>
-			<p>注意：长按方向键，可以加快蛇的移动。</p>
+			<p>Tips：keep Pressing the arrow key, snake will keep moving.</p>
 			<p>Written by Mark Liu. <a href="http://www.markliublog.com/" target="_blank">http://www.markliublog.com/</a></p>
 		</div><!-- end control-panel -->
 	</div>
