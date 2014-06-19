@@ -1,10 +1,10 @@
-var gameState = 1;//游戏的状态 1停止  2运行  3已暂停
+var gameState = 1;// game status  1 stopped  2 running  3 paused
 var gridRowNum = 30;
 var gridColNum = 30;
-var snakeArr = null;//存储snake所占的grid数据
-var food = null;//存储food所占的grid数据
-var speed = 200;//速度，单位毫秒，表示多少毫秒移动一格
-var direction = 39;//蛇运动的方向，初始化向右。
+var snakeArr = null;// the coordinates snake holding
+var food = null;// the coordinate food holding
+var speed = 200;// speed,  the milliseconds to move a grid
+var direction = 39;// direction of snake, init to right
 var moveThread = null;
 $(function() {
 	initGrid(gridRowNum, gridColNum);
@@ -78,7 +78,7 @@ function initGrid(rows, cols) {
 }
 
 /**
- * 在grid中画出蛇，只在初始化时调用。
+ * draw the snake on the grid, call when init.
  * @param snakeArr
  */
 function drawSnake() {
@@ -89,7 +89,7 @@ function drawSnake() {
 }
 
 /**
- * 蛇运动的总函数
+ * main function of snake run
  */
 function snakeRun() {
 	if (direction == 37) {
@@ -106,125 +106,125 @@ function snakeRun() {
 	}
 }
 /**
- * 重置蛇运动的线程
+ * reset the thread of sanke
  */
 function resetMoveThread() {
 	clearInterval(moveThread);
 	moveThread = setInterval(snakeRun, speed);
 }
 /**
- * 蛇向上移动一格
+ * snake moves up a grid
  */
 function moveUp() {
 	var nextNode = [snakeArr[snakeArr.length-1][0], snakeArr[snakeArr.length-1][1]-1];
-	if (checkEqual(food, nextNode)) {//下一步吃到食物
+	if (checkEqual(food, nextNode)) {//the next step will get food
 		snakeArr.push(food);
 		updateScore();
 		initFood();
 		return;
 	}
 	var lastNode = snakeArr[snakeArr.length-1];
-	if ((lastNode[1]-1) < 1 || checkExists([lastNode[0], lastNode[1]-1], snakeArr)) {//撞到墙或撞到自己
+	if ((lastNode[1]-1) < 1 || checkExists([lastNode[0], lastNode[1]-1], snakeArr)) {// knock the wall or self
 		clearInterval(moveThread);
 		gameState = 1;
 		updateGameStateText();
 		$("#pause-game").addClass("disabled");
 		return;
 	}
-	//更新DOM和snakeArr
+	//update DOM and snakeArr
 	$("#snake-grid .row:nth-child("+snakeArr[0][1]+") .col:nth-child("+snakeArr[0][0]+")").removeClass("on");
 	snakeArr.shift();
 	$("#snake-grid .row:nth-child("+(lastNode[1]-1)+") .col:nth-child("+lastNode[0]+")").addClass("on");
 	snakeArr.push([lastNode[0], lastNode[1]-1]);
 }
 /**
- * 蛇向右移动一格
+ * snake moves right a grid
  */
 function moveRight() {
 	var nextNode = [snakeArr[snakeArr.length-1][0]+1, snakeArr[snakeArr.length-1][1]];
-	if (checkEqual(food, nextNode)) {//下一步吃到食物
+	if (checkEqual(food, nextNode)) {//the next step will get food
 		snakeArr.push(food);
 		updateScore();
 		initFood();
 		return;
 	}
 	var lastNode = snakeArr[snakeArr.length-1];
-	//先判断是否要越界？
-	if ((lastNode[0]+1) > gridColNum || checkExists([lastNode[0]+1, lastNode[1]], snakeArr)) {//撞到墙或撞到自己
+	// check if out of bounds
+	if ((lastNode[0]+1) > gridColNum || checkExists([lastNode[0]+1, lastNode[1]], snakeArr)) {// knock the wall or self
 		clearInterval(moveThread);
 		gameState = 1;
 		updateGameStateText();
 		$("#pause-game").addClass("disabled");
 		return;
 	}
-	//更新DOM和snakeArr
+	//update DOM and snakeArr
 	$("#snake-grid .row:nth-child("+snakeArr[0][1]+") .col:nth-child("+snakeArr[0][0]+")").removeClass("on");
 	snakeArr.shift();
 	$("#snake-grid .row:nth-child("+lastNode[1]+") .col:nth-child("+(lastNode[0]+1)+")").addClass("on");
 	snakeArr.push([lastNode[0]+1, lastNode[1]]);
 
-	//drawSnake();//重新画一遍蛇，不好。
+	//drawSnake();// no need to draw again.
 }
 /**
- * 向下移动一格
+ * snake moves down a grid
  */
 function moveDown() {
 	var nextNode = [snakeArr[snakeArr.length-1][0], snakeArr[snakeArr.length-1][1]+1];
-	if (checkEqual(food, nextNode)) {//下一步吃到食物
+	if (checkEqual(food, nextNode)) {//the next step will get food
 		snakeArr.push(food);
 		updateScore();
 		initFood();
 		return;
 	}
 	var lastNode = snakeArr[snakeArr.length-1];
-	if ((lastNode[1]+1) > gridRowNum || checkExists([lastNode[0], lastNode[1]+1], snakeArr)) {//撞到墙或撞到自己
+	if ((lastNode[1]+1) > gridRowNum || checkExists([lastNode[0], lastNode[1]+1], snakeArr)) {// knock the wall or self
 		clearInterval(moveThread);
 		gameState = 1;
 		updateGameStateText();
 		$("#pause-game").addClass("disabled");
 		return;
 	}
-	//更新DOM和snakeArr
+	//update DOM and snakeArr
 	$("#snake-grid .row:nth-child("+snakeArr[0][1]+") .col:nth-child("+snakeArr[0][0]+")").removeClass("on");
 	snakeArr.shift();
 	$("#snake-grid .row:nth-child("+(lastNode[1]+1)+") .col:nth-child("+lastNode[0]+")").addClass("on");
 	snakeArr.push([lastNode[0], lastNode[1]+1]);
 }
 /**
- * 向左移动一格
+ * snake moves left a grid
  */
 function moveLeft() {
 	var nextNode = [snakeArr[snakeArr.length-1][0]-1, snakeArr[snakeArr.length-1][1]];
-	if (checkEqual(food, nextNode)) {//下一步吃到食物
+	if (checkEqual(food, nextNode)) {//the next step will get food
 		snakeArr.push(food);
 		updateScore();
 		initFood();
 		return;
 	}
 	var lastNode = snakeArr[snakeArr.length-1];
-	//先判断是否要越界？
-	if ((lastNode[0]-1) < 1 || checkExists([lastNode[0]-1, lastNode[1]], snakeArr)) {//撞到墙或撞到自己
+	//check if out of bounds
+	if ((lastNode[0]-1) < 1 || checkExists([lastNode[0]-1, lastNode[1]], snakeArr)) {//knock the wall or self
 		clearInterval(moveThread);
 		gameState = 1;
 		updateGameStateText();
 		$("#pause-game").addClass("disabled");
 		return;
 	}
-	//更新DOM和snakeArr
+	//update DOM and snakeArr
 	$("#snake-grid .row:nth-child("+snakeArr[0][1]+") .col:nth-child("+snakeArr[0][0]+")").removeClass("on");
 	snakeArr.shift();
 	$("#snake-grid .row:nth-child("+lastNode[1]+") .col:nth-child("+(lastNode[0]-1)+")").addClass("on");
 	snakeArr.push([lastNode[0]-1, lastNode[1]]);
 }
 /**
- * 绑定键盘事件
+ * bind keyboard event
  */
 function bindKeyBoard() {
 	$(document).bind("keydown", function(event) {
 		if (gameState != 2) {
 			return;
 		}
-		//方向不能瞬间掉头，为防止快速切换方向，重置线程。
+		// direction can't be switched in a short time, to avoid switch direction quickly, reset the thread.
 		if (event.keyCode==37) {//left
 			if (direction != 39) {
 				resetMoveThread();
@@ -261,7 +261,7 @@ function bindKeyBoard() {
 }
 
 /**
- * 随机生成一个食物,保证了食物不出现在蛇身上。
+ * random a food not over the snake
  */
 function initFood() {
 	food = null;
@@ -275,13 +275,13 @@ function initFood() {
 }
 
 function getRandomPoint() {
-	//需要随机生成两个不超过gridRowNum，gridColNum的随机数
+	//two random numbers within gridRowNum and gridColNum
 	var x = Math.floor(Math.random()*gridColNum+1);
 	var y = Math.floor(Math.random()*gridRowNum+1);
 	return [x,y];
 }
 /**
- * 判断两个数组是否相等
+ * check if the two array equals
  * @param arr1
  * @param arr2
  */
@@ -289,7 +289,7 @@ function checkEqual(arr1, arr2) {
 	return arr1.toString() == arr2.toString();
 }
 /**
- * 监察arr2是否包含arr1
+ * check if arr2 contains arr1
  * @param arr1
  * @param arr2
  */
