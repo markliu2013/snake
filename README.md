@@ -1,7 +1,7 @@
 # JavaScript Snake Game
 
 This is a Snake Game written use JavaScript.
-Read the [blog article](http://www.markliublog.com/js-snake.html) about how it works or [try to play](http://www.markliublog.com/c/snake/index.html).
+Read the [blog article](http://blog.whlcsj.com/js-snake.html) about how it works or [try to play](http://blog.whlcsj.com/c/snake/index.html).
 If you have any suggestion or bug to post, [click here](https://github.com/markliu2013/snake/issues/new).
 
 ## Install
