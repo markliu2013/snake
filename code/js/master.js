@@ -229,7 +229,7 @@ function bindKeyBoard() {
 			if (direction != 39) {
 				resetMoveThread();
 				direction = event.keyCode;
-				moveLeft();
+				moveLeft(); // when you change direction, move one step immediately.
 			}
 			event.preventDefault();
 		}
