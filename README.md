@@ -1,8 +1,6 @@
 # JavaScript Snake Game
 
 This is a Snake Game written use JavaScript.
-[try to play](https://markliu2013.github.io/snake/code/index.html).
-If you have any suggestion or bug to post, [click here](https://github.com/markliu2013/snake/issues/new).
 
 ## Install
 This is only static html files, it is very easy to install. You don't even need a web server like apache or tomcat to run.
